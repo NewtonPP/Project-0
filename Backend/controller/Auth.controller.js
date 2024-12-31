@@ -39,8 +39,7 @@ export const signup = async (req,res) =>{
     }
 }
 
-export const login = async (req,res) =>{
-    
+export const login = async (req,res) =>{    
     try {
         const {Email, Password} = req.body; 
 
@@ -63,5 +62,32 @@ export const login = async (req,res) =>{
     } catch (error) {
         console.log("Error in the Login Controller", error)
         res.status(500).json(error)
+    }
+}
+
+export const getUsers = async (req,res) =>{
+    try {
+        const users = await AuthModel.find()
+        if(!users){
+            return res.status(200).json({message:"You have no freinds"})
+        }
+        return res.status(200).json(users)
+    } catch (error) {
+        console.log("Error in the getUsers controller", error);
+        return res.status(500).json({error:"Internal Server Error"})
+    }
+}
+
+
+export const getUser = async (req, res) => {
+    try {
+        const userId = req.user._id
+        const user = await AuthModel.findById(userId)
+        if(!user) return res.status(400).json({message:"No user found"})
+
+        return res.status(200).json(user)
+    } catch (error) {
+        console.log("Error in the getUser controller", error);
+        return res.status(500).json({error:"Internal Server Error"})
     }
 }
