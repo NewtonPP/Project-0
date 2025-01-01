@@ -1,8 +1,10 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Navigate } from 'react-router-dom'
+import { AuthDataContext } from '../../context/AuthContext'
+
 const Login = () => {
+    const {AuthData, setAuthData} = useContext(AuthDataContext)
     const navigate = useNavigate();
     const [Email, setEmail] = useState("")
     const [Password, setPassword] = useState("")
@@ -13,8 +15,9 @@ const Login = () => {
 
         axios.post("http://localhost:3000/auth/login", LoginData, {withCredentials: true})
         .then((response)=>{
-            localStorage.setItem("UserToken", response.data.Token)
+            localStorage.setItem("ChatUser", JSON.stringify(response.data.user))
             console.log(response.data)
+           
             navigate(`/chat/${response.data.user._id}`)
         })
         .catch((error) =>{throw error})

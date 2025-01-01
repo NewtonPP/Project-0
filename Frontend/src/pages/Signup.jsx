@@ -1,20 +1,25 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import axios from "axios"
 import { Link } from 'react-router-dom'
-
+import { AuthDataContext } from '../../context/AuthContext'
+import { useNavigate } from 'react-router-dom'
 const Signup = () => {
     const [FullName, setFullName] = useState("")
     const [Email, setEmail] = useState("")
     const [Password, setPassword] = useState("")
     const [ConfirmPassword, setConfirmPassword] = useState("")
 
+    const {AuthData, setAuthData} = useContext(AuthDataContext)
+    const navigate = useNavigate();
+
     const HandleSubmit = (e) =>{
         e.preventDefault()
         const SignupData = {FullName, Email, Password, ConfirmPassword}
-        axios.post("http://localhost:3000/auth/signup", SignupData)
+        axios.post("http://localhost:3000/auth/signup", SignupData, {withCredentials: true})
         .then((response)=>{
-            console.log(response)
-            localStorage.setItem("UserToken", response.data.Token)
+            localStorage.setItem("ChatUser", JSON.stringify(response.data.newUser))
+
+            navigate(`/chat/${response.data.newUser._id}`)
         })
         .catch((error)=>{console.log(error)})
     }

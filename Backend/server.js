@@ -7,6 +7,7 @@ import { AuthRouter } from "./routes/auth.route.js";
 import { ConnectToDB } from "./Database/mongo.js";
 import { MessageRouter } from "./routes/message.route.js";
 import cookieParser from "cookie-parser";
+import { InitializeSocket } from "./socket.js";
 dotenv.config()
 const app = express();
 
@@ -20,10 +21,9 @@ app.use("/auth",AuthRouter)
 app.use("/message", MessageRouter)
 
 const server = http.createServer(app);
-const io = new Server(server)
 
 const PORT = process.env.PORT || 4000
-
+InitializeSocket(server)
 ConnectToDB();
 server.listen(PORT, ()=>{
     console.log(`Connected to server at PORT ${PORT}`)
