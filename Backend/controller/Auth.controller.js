@@ -81,8 +81,9 @@ export const getUsers = async (req,res) =>{
 
 export const getUser = async (req, res) => {
     try {
-        const userId = req.user._id
-        const user = await AuthModel.findById(userId)
+        const {id} = req.params
+       
+        const user = await AuthModel.findById(id)
         if(!user) return res.status(400).json({message:"No user found"})
 
         return res.status(200).json(user)

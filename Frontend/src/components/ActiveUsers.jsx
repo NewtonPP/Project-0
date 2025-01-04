@@ -18,14 +18,14 @@ const ActiveUsers = () => {
 
 
   return (
-    <div>
-        <div className='text-2xl font-semibold text-white text-center p-4'>
-            Your friends
+    <div className='overflow-y-auto h-[90.5%]'>
+        <div className='text-2xl font-semibold text-white  p-4'>
+            CONTACTS
         </div>
 
       {
         Users?.map((user)=>(
-            <div className='text-white text-xl font-semibold text-center hover:cursor-pointer' key={user._id} 
+            <div className='text-white text-xl font-semibold p-2 mx-2 my-2 hover:cursor-pointer hover:bg-cyan-800 border rounded-full' key={user._id} 
             onClick={()=>setToUser(user._id)}>
                 {user.FullName}
             </div>

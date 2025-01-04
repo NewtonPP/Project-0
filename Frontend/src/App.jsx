@@ -7,7 +7,7 @@ import { AuthDataContext } from '../context/AuthContext'
 import ChatPage from './pages/ChatPage'
 function App() {
   const {AuthData, setAuthData} = useContext(AuthDataContext)
-
+  console.log(AuthData)
   return (
     <>
       <Routes>

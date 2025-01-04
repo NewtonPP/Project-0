@@ -53,7 +53,7 @@ export const GetMessage = async (req,res) =>{
             $all:[FromUser._id, ToUser.id]
         }}).populate("Messages")
   
-        if(!conversation) return res.status(400).json({message:"Could not find the  conversation"})
+        if(!conversation) return res.status(200).json({message:"No messages to display"})
 
         return res.status(200).json(conversation)
     } catch (error) {

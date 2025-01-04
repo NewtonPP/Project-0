@@ -4,7 +4,7 @@ import App from './App.jsx'
 import './index.css'
 import {BrowserRouter} from "react-router-dom"
 import AuthContext from '../context/AuthContext.jsx'
-import MessageContext from '../context/MessageContext.jsx'
+import MessageContext from '../context/MEssageContext.jsx'
 import SocketContext from '../context/SocketContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
