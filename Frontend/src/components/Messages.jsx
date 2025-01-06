@@ -11,25 +11,30 @@ const Messages = () => {
   const { AuthData } = useContext(AuthDataContext);
   const { Socket } = useContext(SocketDataContext);
 
-  // Fetch messages when ToUser changes
   useEffect(() => {
-    if (ToUser) {
-      axios
-        .get(`http://localhost:3000/message/getmessage/${ToUser}`, {
-          withCredentials: true,
-        })
-        .then((response) => {
-          setMessage(response.data.Messages || []);
-        })
-        .catch(() => setMessage([]));
+    if (!ToUser) {
+      setMessage([]);
+      return;
     }
-  }, [ToUser, Messages]);
 
-  // Register socket listener for new messages
+    axios
+      .get(`http://localhost:3000/message/getmessage/${ToUser}`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        const newMessages = response.data?.Messages || [];
+        setMessage(newMessages);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch messages:", error);
+        setMessage([]);
+      });
+  }, [ToUser, setMessage]);
+
   useEffect(() => {
     if (Socket) {
       const handleNewMessage = (newMessage) => {
-        setMessage((prevMessages) => ([...prevMessages, newMessage]));
+        setMessage((prevMessages) => [...prevMessages, newMessage]);
       };
 
       Socket.on("newMessage", handleNewMessage);
@@ -38,26 +43,28 @@ const Messages = () => {
         Socket.off("newMessage", handleNewMessage);
       };
     }
-  }, [Socket]);
+  }, [Socket, setMessage]);
 
   return (
-    <div className="h-[89.8%] w-full overflow-y-auto">
+    <div className="h-[80.8%] w-full overflow-y-auto">
       {Messages?.length > 0 ? (
-        Messages.map((message) => (
+        Messages.map((message, index) => (
           <div
-            key={message._id}
-            className={message.From === ToUser ? "my-6" : "flex justify-end m-3 "}
+            key={message._id || index}
+            className={message.From === ToUser ? "my-6" : "flex justify-end m-3"}
           >
-            <div className="flex  items-center">
-            <CiUser className="text-2xl mx-2 "/>
-            <p className="bg-white inline p-2 px-3 rounded-2xl font-semibold">{message.Message}</p>
+            <div className="flex items-center">
+              <CiUser className="text-2xl mx-2" />
+              <p className="bg-white inline p-2 px-3 rounded-2xl font-semibold">
+                {message.Message}
+              </p>
             </div>
           </div>
         ))
       ) : (
         <div>
-        <p className="text-gray-500 text-center text-lg">No messages to display.</p>
-        <p className="text-gray-500 text-center text-lg">Start a conversation</p>
+          <p className="text-gray-500 text-center text-lg">No messages to display.</p>
+          <p className="text-gray-500 text-center text-lg">Start a conversation</p>
         </div>
       )}
     </div>

@@ -1,6 +1,7 @@
 import AuthModel from "../models/user.auth.model.js";
 import bcrypt from "bcryptjs"
 import { GenerateTokens } from "../utils/GenerateTokens.js";
+import blacklistedModel from "../models/blacklisted.model.js";
 
 export const signup = async (req,res) =>{
     try {
@@ -90,5 +91,17 @@ export const getUser = async (req, res) => {
     } catch (error) {
         console.log("Error in the getUser controller", error);
         return res.status(500).json({error:"Internal Server Error"})
+    }
+}
+
+
+export const Logout = async (req,res) =>{
+    try {
+        const Token = req.cookies
+        await blacklistedModel.create(Token)
+        res.status(200).json({messager:"Successfully Logged out"})
+    } catch (error) {
+        console.log("Error in the Logout controller", error)
+        res.status(500).json({error})
     }
 }

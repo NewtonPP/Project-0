@@ -17,8 +17,6 @@ const Login = () => {
         .then((response)=>{
             localStorage.setItem("ChatUser", JSON.stringify(response.data.user))
             setAuthData(JSON.parse(localStorage.getItem("ChatUser")))
-            console.log(response.data)
-           
             navigate(`/chat`)
         })
         .catch((error) =>{throw error})

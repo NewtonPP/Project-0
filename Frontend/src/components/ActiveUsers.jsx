@@ -18,7 +18,7 @@ const ActiveUsers = () => {
 
 
   return (
-    <div className='overflow-y-auto h-[90.5%]'>
+    <div className='overflow-y-auto h-[84.5%]'>
         <div className='text-2xl font-semibold text-white  p-4'>
             CONTACTS
         </div>

@@ -5,7 +5,7 @@ export const MessageDataContext = createContext();
 const MessageContext = ({children}) => {
 
 
-    const [Messages,setMessage] = useState();
+    const [Messages,setMessage] = useState([]);
     const [ToUser, setToUser] = useState();
     const [selectedUser, setSelectedUser] = useState();
 
